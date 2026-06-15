@@ -5,7 +5,11 @@ import time
 
 _exchange = ccxt.okx({"enableRateLimit": True})
 
-def fetch_ohlcv(symbol, timeframe="5m", limit=200):
+def fetch_ohlcv(symbol: str, timeframe: str = "5m", limit: int = 200) -> pd.DataFrame:
+    """
+    Descarga velas OHLCV desde OKX (público, sin autenticación).
+    Reintenta hasta 3 veces en caso de error.
+    """
     for attempt in range(3):
         try:
             ohlcv = _exchange.fetch_ohlcv(symbol, timeframe=timeframe, limit=limit)
