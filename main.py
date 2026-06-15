@@ -1,12 +1,16 @@
 # main.py
+import os
 import time
 import logging
 from datetime import datetime
 import config
 from data.ohlcv import fetch_ohlcv
-from strategy.engine import compute_signal_for_asset   # ← cambio aquí
+from strategy.engine import compute_signal_for_asset
 from execution.client import OKXClient
 from risk.sizing import calculate_contracts
+
+# Crear directorio de logs si no existe
+os.makedirs("logs", exist_ok=True)
 
 # Configuración de logging
 logging.basicConfig(
