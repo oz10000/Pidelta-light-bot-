@@ -17,6 +17,7 @@ class OKXClient:
             self.exchange.set_sandbox_mode(False)
 
     def fetch_position(self, symbol):
+        """Devuelve la posición activa para el símbolo o None."""
         try:
             positions = self.exchange.fetch_positions([symbol])
             for pos in positions:
@@ -34,6 +35,7 @@ class OKXClient:
         return self.fetch_position(symbol) is not None
 
     def fetch_free_equity(self):
+        """Saldo USDT disponible."""
         balance = self.exchange.fetch_balance()
         return balance.get("USDT", {}).get("free", 0.0)
 
@@ -41,12 +43,16 @@ class OKXClient:
         return self.exchange.fetch_ticker(symbol)
 
     def place_market_order(self, symbol, side, contracts):
-        return self.exchange.create_order(symbol, "market", side, contracts, None, {"tdMode": "isolated"})
+        """Coloca una orden de mercado (abre posición)."""
+        params = {"tdMode": "isolated"}
+        return self.exchange.create_order(symbol, "market", side, contracts, None, params)
 
     def place_take_profit(self, symbol, side, contracts, price):
+        """Orden condicional de Take Profit (reduce only)."""
         params = {"tdMode": "isolated", "reduceOnly": True, "stopPrice": price}
         return self.exchange.create_order(symbol, "take_profit_market", side, contracts, None, params)
 
     def place_stop_loss(self, symbol, side, contracts, price):
+        """Orden condicional de Stop Loss (reduce only)."""
         params = {"tdMode": "isolated", "reduceOnly": True, "stopPrice": price}
         return self.exchange.create_order(symbol, "stop_market", side, contracts, None, params)
