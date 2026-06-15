@@ -4,7 +4,7 @@ import logging
 from datetime import datetime
 import config
 from data.ohlcv import fetch_ohlcv
-from signal.engine import compute_signal_for_asset
+from strategy.engine import compute_signal_for_asset   # ← cambio aquí
 from execution.client import OKXClient
 from risk.sizing import calculate_contracts
 
