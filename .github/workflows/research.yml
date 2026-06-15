@@ -1,0 +1,27 @@
+name: PideltaBot Research
+
+on:
+  schedule:
+    - cron: "0 0 * * 1"   # cada lunes
+  workflow_dispatch:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python sim_freq.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: simulation_reports
+          path: |
+            simulation_metrics.csv
+            frequency_comparison.csv
+            threshold_sweep.csv
+            trade_log.csv
+            performance_metrics.csv
+            audit.log
